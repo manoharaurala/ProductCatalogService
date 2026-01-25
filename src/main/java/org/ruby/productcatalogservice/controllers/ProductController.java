@@ -49,7 +49,7 @@ public class ProductController {
         Call service to get product by ID
          */
         if (productId < 1) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("Product ID must be greater than 0");
         }
         Product product = productService.getProductById(productId);
         if (product == null) {
@@ -74,6 +74,22 @@ public class ProductController {
                         .map(ProductMapper::mapToProductDTO)
                         .toList();
 
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDto, @PathVariable("productId") Long productId) {
+        /*
+        Call service to update product
+         */
+        if (productId == null || productId < 1 || productDto == null) {
+            throw new IllegalArgumentException("Product ID must be greater than 0 or Product data is null");
+        }
+        Product existingProduct = productService.getProductById(productId);
+        if (existingProduct == null) {
+            throw new IllegalArgumentException("Product ID does not exist");
+        }
+        Product updatedProduct = productService.updateProduct(ProductMapper.mapToProduct(productDto), productId);
+        return new ResponseEntity<>(ProductMapper.mapToProductDTO(updatedProduct), HttpStatus.OK);
     }
 
 

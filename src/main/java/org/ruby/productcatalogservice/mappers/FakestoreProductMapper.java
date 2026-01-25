@@ -28,4 +28,23 @@ public class FakestoreProductMapper {
 
     }
 
+    public static FakestoreProductDto mapToFakestoreProductDto(Product product) {
+        FakestoreProductDto fakestoreProductDto = new FakestoreProductDto();
+        fakestoreProductDto.setId(product.getId());
+        fakestoreProductDto.setTitle(product.getName());
+        fakestoreProductDto.setDescription(product.getDescription());
+        fakestoreProductDto.setImage(product.getImageUrl());
+        fakestoreProductDto.setPrice(product.getPrice());
+        /*
+        fakestore category is a string
+        but in our product, categorys is not a string
+         */
+
+        if (product.getCategory() != null) {
+            fakestoreProductDto.setCategory(product.getCategory().getName());
+        }
+
+        return fakestoreProductDto;
+    }
+
 }

@@ -1,9 +1,11 @@
 package org.ruby.productcatalogservice.dtos;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 @Getter
+@Setter
 @Service
 public class FakestoreProductDto {
     private Long id;

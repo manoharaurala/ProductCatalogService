@@ -10,4 +10,6 @@ public interface IProductService {
     List<Product> getProducts();
 
     Product createProduct(Product product);
+
+    Product updateProduct(Product product, Long id);
 }
