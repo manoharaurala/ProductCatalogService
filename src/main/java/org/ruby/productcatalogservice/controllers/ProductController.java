@@ -4,6 +4,7 @@ import org.ruby.productcatalogservice.dtos.ProductDTO;
 import org.ruby.productcatalogservice.mappers.ProductMapper;
 import org.ruby.productcatalogservice.models.Product;
 import org.ruby.productcatalogservice.services.IProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ProductController {
     /*
     Constructor-based dependency injection
      */
-    public ProductController(IProductService productService) {
+    public ProductController(@Qualifier("storageProductService") IProductService productService) {
         this.productService = productService;
     }
     /*
@@ -36,6 +37,9 @@ public class ProductController {
         Call service to create product
          */
         Product product = productService.createProduct(ProductMapper.mapToProduct(productDto));
+        if(product==null){
+            throw new IllegalArgumentException("Product with the same ID already exists");
+        }
         return ProductMapper.mapToProductDTO(product);
 
     }
@@ -77,7 +81,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDto, @PathVariable("productId") Long productId) {
+    public ResponseEntity<ProductDTO> replaceProduct(@RequestBody ProductDTO productDto, @PathVariable("productId") Long productId) {
         /*
         Call service to update product
          */
@@ -88,9 +92,22 @@ public class ProductController {
         if (existingProduct == null) {
             throw new IllegalArgumentException("Product ID does not exist");
         }
-        Product updatedProduct = productService.updateProduct(ProductMapper.mapToProduct(productDto), productId);
+        Product updatedProduct = productService.replaceProduct(ProductMapper.mapToProduct(productDto), productId);
         return new ResponseEntity<>(ProductMapper.mapToProductDTO(updatedProduct), HttpStatus.OK);
     }
+
+
+
+
+/*
+2 ways to solve ambiguity
+1. Primary implementation
+2. Qualifer
+ */
+/*
+Primary-
+Qualifer
+ */
 
 
 }

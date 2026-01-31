@@ -155,7 +155,7 @@ public class FakestoreProductService implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Product product, Long productId) {
+    public Product replaceProduct(Product product, Long productId) {
         /*FakestoreProductDto fakestoreProductDto = FakestoreProductMapper.mapToFakestoreProductDto(product);
 
         ResponseEntity<FakestoreProductDto> fakestoreResponseEntity = this.putForEntity("https://fakestoreapi.com/products/{productId}",
