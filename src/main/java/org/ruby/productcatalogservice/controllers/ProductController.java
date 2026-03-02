@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
     private final IProductService productService;
 
     /*
@@ -37,7 +38,7 @@ public class ProductController {
         Call service to create product
          */
         Product product = productService.createProduct(ProductMapper.mapToProduct(productDto));
-        if(product==null){
+        if (product == null) {
             throw new IllegalArgumentException("Product with the same ID already exists");
         }
         return ProductMapper.mapToProductDTO(product);
